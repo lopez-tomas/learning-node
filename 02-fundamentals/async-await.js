@@ -47,4 +47,26 @@ const getSalary = ( id ) => {
 	});
 }
 
+const getUserInfo = async( id ) => { // Async transfroms a function into an asynchronous function that returns a Promise.
+	try {
+		const employee = await getEmployee(id);
+		const salary = await getSalary( id );
+
+		return `Employee(ID: ${ id }) ${employee} has a salary of: $ ${ salary }`;
+
+	} catch (error) {
+			throw error;
+	}
+}
+
 const id = 1;
+
+getUserInfo( id )
+	.then( msg => {
+		console.log('OK');
+		console.log(msg) 
+	})	
+	.catch( err => { 
+		console.log('ERROR');
+		console.log( err ) 
+	})
