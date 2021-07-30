@@ -47,7 +47,7 @@ const getSalary = ( id ) => {
 	});
 }
 
-const id = 1;
+const id = 2;
 
 //getEmployee(id)
 	//.then( employee => console.log( employee ) )
@@ -57,15 +57,27 @@ const id = 1;
 	//.then( salary => console.log( salary ) )
 	//.catch( err => console.log( err ) )
 
+// # PROMISE'S HELL # //
+
+//getEmployee( id )
+//	.then( employee => {
+//		getSalary( id )
+//			.then( salary => {
+//				console.log(`Employee(ID: ${id}) ${ employee } has a salary of: $ ${ salary }.`);
+//			})
+//			.catch( err => console.log( err ) )
+//	})
+//	.catch( err => console.log( err ) )
+
+// # In this way, the code is difficult to maintain.
+// # We must use Promise Chaining to manage these errors and make everything easier
+
+let name;
+
 getEmployee( id )
 	.then( employee => {
-		getSalary( id )
-			.then( salary => {
-				console.log(`Employee(ID: ${id}) ${ employee } has a salary of: $ ${ salary }.`);
-			})
-			.catch( err => console.log( err ) )
+		nombre = employee;
+		return getSalary( id );
 	})
-	.catch( err => console.log( err ) )
-
-// In this way, the code is difficult to maintain.
-// We must use Promise Chaining to manage these errors and make everything easier
+	.then( salary => console.log(`Employee(ID: ${id}) ${ nombre } has a salary of: $ ${ salary }.`))
+	.catch( err => console.log( err ) );
