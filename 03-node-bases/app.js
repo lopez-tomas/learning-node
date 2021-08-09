@@ -3,7 +3,7 @@ const fs = require('fs');
 
 console.clear();
 
-const base = 3;
+const base = 2;
 const limit = 10;
 
 console.log('================');
@@ -18,7 +18,7 @@ for(let i = 1; i <= limit; i++) {
 
 console.log(output);
 
-fs.writeFile(`table-${base}`, output, (err) => {
+fs.writeFile(`table-${base}.txt`, output, (err) => {
 	if (err) throw err;
 
 	console.log(`table-${base}.txt file created.`);
