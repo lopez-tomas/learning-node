@@ -1,12 +1,25 @@
+const fs = require('fs');
+// import { writeFile } from 'fs'; => new standard to import in ES6
+
 console.clear();
 
-console.log('================');
-console.log('Tabla del 5');
-console.log('================');
-
-const base = 5;
+const base = 3;
 const limit = 10;
 
+console.log('================');
+console.log(`Table of ${base}`);
+console.log('================');
+
+let output = '';
+
 for(let i = 1; i <= limit; i++) {
-	console.log(`${ base } X ${ i } = ${ base * i }`);
+	output += `${ base } X ${ i } = ${ base * i }\n`;
 }
+
+console.log(output);
+
+fs.writeFile(`table-${base}`, output, (err) => {
+	if (err) throw err;
+
+	console.log(`table-${base}.txt file created.`);
+})
