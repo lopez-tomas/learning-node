@@ -16,22 +16,27 @@ const printTable = ( base, output ) => {
 	console.log(output);
 };
 
-const createFile = ( base, limit ) => {
-  	
-	let output = '';
-	output = multiply( base, limit );
+const createFile = async( base, limit ) => {
+	
+	try {
+		let output = '';
+		output = multiply( base, limit );
+		fileName = `table-${base}.txt`;
 
-	//fs.writeFile(`table-${base}.txt`, output, (err) => {
-	//	if (err) throw err;
-	//
-	//	console.log(`table-${base}.txt file created.`);
-	//})
-
-	fs.writeFileSync( `table-${base}.txt`, output );
-	// To manage erros with writeFileSync we have to use try and catch.
-
-	return `\ntable-${base}.txt file created.\n`;
-};
+		//fs.writeFile(`table-${base}.txt`, output, (err) => {
+		//	if (err) throw err;
+		//
+		//	console.log(`table-${base}.txt file created.`);
+		//})
+		
+		fs.writeFileSync( fileName, output ); 
+		// To manage erros with writeFileSync we have to use try and catch.
+		
+		return `${ fileName }`;
+	} catch (err) {
+		throw err;
+	}
+}
 
 module.exports = {
 	multiply,
