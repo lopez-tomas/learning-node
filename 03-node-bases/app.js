@@ -3,7 +3,7 @@ const fs = require('fs');
 
 console.clear();
 
-const base = 2;
+const base = 3;
 const limit = 10;
 
 console.log('================');
@@ -18,8 +18,13 @@ for(let i = 1; i <= limit; i++) {
 
 console.log(output);
 
-fs.writeFile(`table-${base}.txt`, output, (err) => {
-	if (err) throw err;
+//fs.writeFile(`table-${base}.txt`, output, (err) => {
+//	if (err) throw err;
+//
+//	console.log(`table-${base}.txt file created.`);
+//})
 
-	console.log(`table-${base}.txt file created.`);
-})
+fs.writeFileSync( `table-${base}.txt`, output );
+// To manage erros with writeFileSync we have to use try and catch.
+
+console.log(`table-${base}.txt file created.`);
