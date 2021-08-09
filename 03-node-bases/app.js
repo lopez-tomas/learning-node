@@ -1,8 +1,11 @@
-const { createFile } = require('./helpers/multiply');
+const { multiply, printTable, createFile } = require('./helpers/multiply');
 
 console.clear();
 
 const base = 5;
 const limit = 10;
 
-createFile(base, limit);
+let message = createFile( base, limit );
+console.log(message);
+
+printTable( base, multiply( base, limit ) );
