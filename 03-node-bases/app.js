@@ -2,11 +2,12 @@ const { printTable, createFile } = require('./helpers/multiply');
 
 console.clear();
 
-const [ , , arg3 = 'base=5' ] = process.argv;
-const [ , base = 5 ] = arg3.split('=');
-
-//const base = 5;
+const baseV = 2;
 const limit = 10;
+
+const [ , , arg3 = `base=${baseV}` ] = process.argv;
+const [ , base = baseV ] = arg3.split('=');
+
 
 createFile( base, limit )
 	.then( fileName => console.log(fileName, 'succesfully created.') )
