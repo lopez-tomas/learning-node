@@ -1,5 +1,5 @@
 const fs = require('fs');
-// import { writeFile } from 'fs'; => new standard to import in ES6
+//import { writeFile } from 'fs'; => new standard to import in ES6
 
 const multiply = ( base, limit ) => {
 	let output = '';
@@ -9,18 +9,23 @@ const multiply = ( base, limit ) => {
 	return output;
 };
 
-const printTable = ( base, output ) => {
-	console.log('================');
-	console.log(`Table of ${base}`);
-	console.log('================');
-	console.log(output);
+const printHeader = ( base ) => {
+	let output = '================\n' +
+							 `   Table of ${base}\n` +
+	 						 '================\n\n';
+	return output;
+};
+
+const printTable = ( base, limit ) => {
+	console.log(printHeader( base ) + multiply( base, limit));
 };
 
 const createFile = async( base, limit ) => {
 	
 	try {
 		let output = '';
-		output = multiply( base, limit );
+		output += printHeader( base );
+		output += multiply( base, limit );
 		fileName = `table-${base}.txt`;
 
 		//fs.writeFile(`table-${base}.txt`, output, (err) => {
@@ -39,7 +44,6 @@ const createFile = async( base, limit ) => {
 }
 
 module.exports = {
-	multiply,
 	printTable,
 	createFile 
 }
