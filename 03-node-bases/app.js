@@ -1,4 +1,4 @@
-const { multiply, printTable, createFile } = require('./helpers/multiply');
+const { printTable, createFile } = require('./helpers/multiply');
 
 console.clear();
 
@@ -9,4 +9,4 @@ createFile( base, limit )
 	.then( fileName => console.log(fileName, 'succesfully created.') )
 	.catch( err => console.log(err) );
 
-printTable( base, multiply( base, limit ) );
+printTable( base,  limit );
