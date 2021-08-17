@@ -17,6 +17,7 @@ const argv = require('yargs')
 console.clear();
 
 console.log( argv );
+let	base = argv.base;
 
 //const [ , , arg3 = `base=${baseV}` ] = process.argv;
 //const [ , base = baseV ] = arg3.split('=');
