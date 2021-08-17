@@ -37,6 +37,7 @@ console.clear();
 console.log( argv );
 let	base = argv.base;
 let limit = argv.limit;
+let show = argv.show;
 
 //const [ , , arg3 = `base=${baseV}` ] = process.argv;
 //const [ , base = baseV ] = arg3.split('=');
@@ -46,4 +47,6 @@ createFile( base, limit )
 	.then( fileName => console.log(fileName, 'succesfully created.') )
 	.catch( err => console.log(err) );
 
-printTable( base,  limit );
+if ( show ) {
+	printTable( base,  limit );
+}
