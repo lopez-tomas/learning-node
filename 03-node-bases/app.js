@@ -9,7 +9,8 @@ const argv = require('yargs')
 									'l': {
 										alias: 'limit',
 										type: 'number',
-										demandOption: true
+										demandOption: true,
+										describe: 'To establish the limit.'
 									},
 									's': {
 										alias: 'show',
