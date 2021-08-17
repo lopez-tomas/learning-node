@@ -10,6 +10,12 @@ const argv = require('yargs')
 										alias: 'limit',
 										type: 'number',
 										demandOption: true
+									},
+									's': {
+										alias: 'show',
+										type: 'boolean',
+										default: false,
+										describe: 'Prints on console the corresponding  multiplication table.'
 									}
 								})								
 								.check( (argv, options) => {
