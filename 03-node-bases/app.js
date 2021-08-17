@@ -4,7 +4,8 @@ const argv = require('yargs')
 									'b': {
 										alias: 'base',
 										type: 'number',
-										demandOption: true
+										demandOption: true,
+										describe: 'To establish the base.'
 									},
 									'l': {
 										alias: 'limit',
