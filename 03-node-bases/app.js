@@ -17,7 +17,7 @@ const argv = require('yargs')
 										alias: 'show',
 										type: 'boolean',
 										default: false,
-										describe: 'Prints on console the corresponding  multiplication table.'
+										describe: 'Prints on console the corresponding multiplication table.'
 									}
 								})								
 								.check( (argv, options) => {
