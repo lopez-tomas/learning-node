@@ -3,6 +3,11 @@ const { printTable, createFile } = require('./helpers/multiply');
 
 console.clear();
 
+console.log(process.argv);
+console.log( argv );
+
+console.log('base: yargs', argv.base);
+
 const baseV = 2;
 const limit = 10;
 
@@ -14,4 +19,4 @@ const limit = 10;
 //	.then( fileName => console.log(fileName, 'succesfully created.') )
 //	.catch( err => console.log(err) );
 
-printTable( base,  limit );
+//printTable( base,  limit );
