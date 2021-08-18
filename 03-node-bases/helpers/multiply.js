@@ -35,7 +35,7 @@ const createFile = async( base, limit ) => {
 		//	console.log(`table-${base}.txt file created.`);
 		//})
 		
-		fs.writeFileSync( fileName, output ); 
+		fs.writeFileSync( `./tables/${ fileName }`, output ); 
 		// To manage erros with writeFileSync we have to use try and catch.
 		
 		return `${ fileName }`;
