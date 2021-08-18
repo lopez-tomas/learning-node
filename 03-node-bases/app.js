@@ -14,7 +14,7 @@ let show = argv.show;
 // I am not going to use it anymore, but I leave this part of the code for 'documentation'.
 
 createFile( base, limit )
-	.then( fileName => console.log(fileName.file.fileStyle, 'succesfully created.'.success) )
+	.then( fileName => console.log(fileName.file, 'succesfully created.'.success) )
 	.catch( err => console.log(err.error) );
 
 if ( show ) {
