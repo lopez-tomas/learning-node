@@ -5,14 +5,14 @@ const colors = require('../config/colors');
 const multiply = ( base, limit ) => {
 	let output = '';
   for(let i = 1; i <= limit; i++) {
-		output += `${ base }`.number + ' X '.crux.cruxStyle + `${ i }`.number + ` = ` + `${ base * i }\n`.result.resultBg.resultStyle;
+		output += `${ colors.number( base ) } ${ 'x'.crux } ${ colors.number( i ) } = ${ colors.result( base * i ) }\n`;
 	}
 	return output;
 };
 
 const printHeader = ( base ) => {
 	let output = '============\n'.headerLines +
-							 ` Table of ${base} \n`.headerTitleBg.headerTitleStyle +
+							 ` Table of ${ colors.headerNumber( base )} \n`.headerTitle +
 	 						 '============\n\n'.headerLines;
 	return output;
 };
