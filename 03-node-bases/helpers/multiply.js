@@ -12,7 +12,7 @@ const multiply = ( base, limit ) => {
 
 const printHeader = ( base ) => {
 	let output = '============\n'.headerLines +
-							 ` Table of ${base} \n`.headerTitleBg.headerStyle +
+							 ` Table of ${base} \n`.headerTitleBg.headerTitleStyle +
 	 						 '============\n\n'.headerLines;
 	return output;
 };
