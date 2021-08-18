@@ -1,17 +1,13 @@
 const colors = require('colors');
 
 colors.setTheme({
-	headerTitleBg: 'bgYellow',
-	headerTitleStyle: 'bold',
+	headerNumber: ['bgWhite', 'magenta'],
+	headerTitle: ['bgYellow', 'bold'],
 	headerLines: 'rainbow',
 	number: 'yellow',
-	result: 'magenta',
-	resultBg: 'bgWhite',
-	resultStyle: 'bold',
-	crux: 'blue',
-	cruxStyle: 'bold',
-	file: 'rainbow',
-	fileStyle: 'bold',
+	result: ['magenta', 'bgWhite', 'bold'],
+	crux: ['blue', 'bold'],
+	file: ['rainbow', 'bold'],
 	success: 'blue',
 	error: 'red'
 });
