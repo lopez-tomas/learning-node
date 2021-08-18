@@ -1,18 +1,19 @@
 const fs = require('fs');
+const colors = require('../config/colors');
 //import { writeFile } from 'fs'; => new standard to import in ES6
 
 const multiply = ( base, limit ) => {
 	let output = '';
   for(let i = 1; i <= limit; i++) {
-		output += `${ base } X ${ i } = ${ base * i }\n`;
+		output += `${ base }`.number + ' X '.crux.cruxStyle + `${ i }`.number + ` = ` + `${ base * i }\n`.result.resultBg.resultStyle;
 	}
 	return output;
 };
 
 const printHeader = ( base ) => {
-	let output = '================\n' +
-							 `   Table of ${base}\n` +
-	 						 '================\n\n';
+	let output = '============\n'.headerLines +
+							 ` Table of ${base} \n`.headerTitleBg.headerStyle +
+	 						 '============\n\n'.headerLines;
 	return output;
 };
 
