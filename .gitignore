@@ -1,6 +1,4 @@
 # TXT files
 ###########
-*.txt
-03-node-bases/*.txt
+03-node-bases/tables/*.txt
 node_modules
-
