@@ -4,8 +4,8 @@
   "description": "Basic console application to create multiplication tables files through flags values. It can also print the table.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "base3": "node app --base=3"
+    "test": "node app --base=3 --limit=10 --show",
+    "test2": "node app --base=2 --limit=10"
   },
   "author": "Tomás López",
   "license": "MIT",
