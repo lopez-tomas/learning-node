@@ -4,9 +4,19 @@ const colors = require('../config/colors');
 
 const multiply = ( base, limit ) => {
 	let output = '';
+
   for(let i = 1; i <= limit; i++) {
-		output += `${ colors.number( base ) } ${ 'x'.crux } ${ colors.number( i ) } = ${ colors.result( base * i ) }\n`;
+		output += `${ base } x ${ i } = ${ base * i }\n`;
 	}
+	return output;
+};
+
+const printNumber = ( base, limit ) => {
+  let output = '';
+
+	for(let i = 1; i <= limit; i++) {
+		output += `${ colors.number( base ) } ${ 'x'.crux } ${ colors.number( i ) } = ${ colors.result( base * i ) }\n`;
+  }
 	return output;
 };
 
@@ -18,14 +28,13 @@ const printHeader = ( base ) => {
 };
 
 const printTable = ( base, limit ) => {
-	console.log(printHeader( base ) + multiply( base, limit));
+	console.log(printHeader( base ) + printNumber( base, limit ));
 };
 
 const createFile = async( base, limit ) => {
 	
 	try {
 		let output = '';
-		output += printHeader( base );
 		output += multiply( base, limit );
 		fileName = `table-${base}.txt`;
 
@@ -35,7 +44,7 @@ const createFile = async( base, limit ) => {
 		//	console.log(`table-${base}.txt file created.`);
 		//})
 		
-		fs.writeFileSync( fileName, output ); 
+		fs.writeFileSync( `./tables/${ fileName }`, output ); 
 		// To manage erros with writeFileSync we have to use try and catch.
 		
 		return `${ fileName }`;
