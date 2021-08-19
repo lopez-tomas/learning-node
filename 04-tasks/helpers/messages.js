@@ -6,13 +6,13 @@ const showMenu = () => {
   console.log(' Select one option'.header);
   console.log('===================\n'.header);
 
-  console.log(`1. Create task`);
-  console.log(`2. List tasks`);
-  console.log(`3. List completed tasks`);
-  console.log(`4. List pending tasks`);
-  console.log(`5. Complete task(s)`);
-  console.log(`6. Delete task`);
-  console.log(`0. Exit \n`);
+  console.log(`${ '1.'.option } Create task`);
+  console.log(`${ '2.'.option } List tasks`);
+  console.log(`${ '3.'.option } List completed tasks`);
+  console.log(`${ '4.'.option } List pending tasks`);
+  console.log(`${ '5.'.option } Complete task(s)`);
+  console.log(`${ '6.'.option } Delete task`);
+  console.log(`${ '0.'.option } Exit \n`);
 };
 
 module.exports = {
