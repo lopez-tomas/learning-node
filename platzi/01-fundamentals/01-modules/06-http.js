@@ -1,12 +1,17 @@
 const http = require('http');
 
+const greetings = () => {
+  return 'Hi, how are you?';
+}
+
 const router = (req, res) => {
   console.log('New petition');
   console.log(req.url);
 
   switch(req.url) {
     case '/hola':
-      res.write('Hi, how are you?');
+      let hi = greetings();
+      res.write(hi);
       res.end();
       break;
     default:
