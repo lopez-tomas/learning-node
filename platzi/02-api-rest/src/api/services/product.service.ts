@@ -27,7 +27,7 @@ class ProductsService {
     }
   }
 
-  create(data: CreateProductDto) {
+  async create(data: CreateProductDto) {
     const newProduct: Product = {
       id: faker.datatype.uuid(),
       ...data
@@ -37,15 +37,24 @@ class ProductsService {
     return newProduct;
   }
 
-  get() {
-    return this.products;
+  async get() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.products);
+      }, 5000);
+    });
   }
 
-  getProduct(id: Product['id']) {
-    return this.products.find(product => product.id === id);
+  async getProduct(id: Product['id']) {
+    const product = this.products.find(product => product.id === id);
+    if (product) {
+      return product;
+    } else {
+      throw new Error('product not found');
+    }
   }
 
-  update(id: Product['id'], changes: UpdateProductDto) {
+  async update(id: Product['id'], changes: UpdateProductDto) {
     const index = this.products.findIndex(product => product.id === id);
 
     if (index === -1) throw new Error('product not found');
@@ -56,7 +65,7 @@ class ProductsService {
     return this.products[index];
   }
 
-  delete(id: Product['id']) {
+  async delete(id: Product['id']) {
     const index = this.products.findIndex(product => product.id === id);
 
     if (index === -1) throw new Error('product not found');
