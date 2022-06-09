@@ -94,27 +94,26 @@ router.get('/:userId/orders/:orderId', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
   const body = req.body;
-  res.status(HttpStatusCode.CREATED).json({
-    "message": "created",
-    "data": body
-  });
+  const newUser = service.create(body);
+
+  res.status(HttpStatusCode.CREATED).json(newUser);
 });
 
 router.patch('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const body = req.body;
-  res.status(HttpStatusCode.OK).json({
-    "message": "updated",
-    "data": body,
-    id
-  })
+  const user = service.update(id, body);
+
+  res.status(HttpStatusCode.OK).json(user);
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
+  const response = service.delete(id);
+
   res.status(HttpStatusCode.OK).json({
-    "message": "deleted",
-    id
+    message: 'user deleted',
+    response
   });
 });
 
