@@ -1,7 +1,6 @@
 import express, { Router, Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
-import { appendFile } from 'fs';
-import { json } from 'stream/consumers';
+import { HttpStatusCode } from '../interfaces/status';
 
 const router: Router = express.Router();
 
@@ -14,7 +13,7 @@ router.get('/', (req: Request, res: Response) => {
       offset
     })
   } else {
-    res.json([
+    res.status(HttpStatusCode.OK).json([
       {
         id: faker.datatype.uuid(),
         name: 'Peter Parker',
@@ -36,7 +35,7 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  res.json({
+  res.status(HttpStatusCode.OK).json({
     id,
     name: 'John Doe',
     email: 'john@doe.com',
@@ -46,7 +45,7 @@ router.get('/:id', (req: Request, res: Response) => {
 router.get('/:id/orders', (req: Request, res: Response) => {
   const { id } = req.params;
 
-  res.json({
+  res.status(HttpStatusCode.OK).json({
     userId: id,
     orders: [
       {
@@ -93,7 +92,7 @@ router.get('/:id/orders', (req: Request, res: Response) => {
 router.get('/:userId/orders/:orderId', (req: Request, res: Response) => {
   const { userId, orderId } = req.params;
 
-  res.json({
+  res.status(HttpStatusCode.OK).json({
     userId,
     orderId,
     date: faker.date.recent(),
@@ -113,7 +112,7 @@ router.get('/:userId/orders/:orderId', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
   const body = req.body;
-  res.json({
+  res.status(HttpStatusCode.CREATED).json({
     "message": "created",
     "data": body
   });
@@ -122,7 +121,7 @@ router.post('/', (req: Request, res: Response) => {
 router.patch('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const body = req.body;
-  res.json({
+  res.status(HttpStatusCode.OK).json({
     "message": "updated",
     "data": body,
     id
@@ -131,7 +130,7 @@ router.patch('/:id', (req: Request, res: Response) => {
 
 router.delete('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  res.json({
+  res.status(HttpStatusCode.OK).json({
     "message": "deleted",
     id
   });
