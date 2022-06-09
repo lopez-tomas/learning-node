@@ -13,14 +13,16 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  const category = service.getCategory(id);
 
-  if (category) {
+  try {
+    const category = service.getCategory(id);
     res.status(HttpStatusCode.OK).json(category);
-  } else {
-    res.status(HttpStatusCode.BAD_REQUEST).json({
-      message: 'category not found'
-    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
   }
 });
 
@@ -28,36 +30,71 @@ router.get('/:id/products/', (req: Request, res: Response) => {
   const { id } = req.params;
   res.status(HttpStatusCode.OK).json({
     categoryId: id,
-    name: faker.commerce.department(),
-    price: parseFloat(faker.commerce.price()),
-    isNew: faker.datatype.boolean(),
-    tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
+    products: [
+      {
+        name: faker.commerce.department(),
+        price: parseFloat(faker.commerce.price()),
+        isNew: faker.datatype.boolean(),
+        tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
+      },
+      {
+        categoryId: id,
+        name: faker.commerce.department(),
+        price: parseFloat(faker.commerce.price()),
+        isNew: faker.datatype.boolean(),
+        tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
+      },
+    ],
   });
 });
 
 router.post('/', (req: Request, res: Response) => {
   const body = req.body;
-  const newCategory = service.create(body);
 
-  res.status(HttpStatusCode.CREATED).json(newCategory);
+  try {
+    const newCategory = service.create(body);
+    res.status(HttpStatusCode.CREATED).json(newCategory);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
+  }
 });
 
 router.patch('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const body = req.body;
-  const category = service.update(id, body);
 
-  res.status(HttpStatusCode.OK).json(category);
+  try {
+    const category = service.update(id, body);
+    res.status(HttpStatusCode.OK).json(category);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
+  }
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
-  const { id} = req.params;
-  const response = service.delete(id);
+  const { id } = req.params;
 
-  res.status(HttpStatusCode.OK).json({
-    message: "category deleted",
-    response
-  });
+  try {
+    const response = service.delete(id);
+    res.status(HttpStatusCode.OK).json({
+      message: "category deleted",
+      response
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
+  }
 });
 
 export {

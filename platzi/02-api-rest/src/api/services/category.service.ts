@@ -23,7 +23,7 @@ class CategoriesService {
     }
   }
 
-  create(data: CreateCategoryDto) {
+  async create(data: CreateCategoryDto) {
     const newCategory: Category = {
       id: faker.datatype.uuid(),
       ...data
@@ -33,15 +33,25 @@ class CategoriesService {
     return newCategory;
   }
 
-  get() {
-    return this.categories;
+  async get() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.categories);
+      });
+    });
   }
 
-  getCategory(id: Category['id']) {
-    return this.categories.find(user => user.id === id);
+  async getCategory(id: Category['id']) {
+    const category = this.categories.find(user => user.id === id);
+
+    if (category) {
+      return category;
+    } else {
+      throw new Error('category not found');
+    }
   }
 
-  update(id: Category['id'], changes: UpdateCategoryDto) {
+  async update(id: Category['id'], changes: UpdateCategoryDto) {
     const index = this.categories.findIndex(category => category.id === id);
 
     if (index === -1) throw new Error('category not found');
@@ -52,7 +62,7 @@ class CategoriesService {
     return this.categories[index];
   }
 
-  delete(id: Category['id']) {
+  async delete(id: Category['id']) {
     const index = this.categories.findIndex(category => category.id === id);
 
     if (index === -1) throw new Error('category not found');
