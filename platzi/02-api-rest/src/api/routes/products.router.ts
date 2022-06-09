@@ -1,22 +1,12 @@
 import express, { Router, Request, Response } from 'express';
-const { faker } = require('@faker-js/faker');
-import { HttpStatusCode } from '../interfaces/status';
+import { HttpStatusCode } from '../interfaces/global';
+import ProductsService from '../services/product.service';
 
 const router: Router = express.Router();
+const service = new ProductsService();
 
 router.get('/', (req: Request, res: Response) => {
-  const products = [];
-  const { size } = req.query;
-  const limit = size || 10;
-
-  for(let i=0; i < limit; i++) {
-    products.push({
-      id: faker.datatype.uuid(),
-      name: faker.commerce.productName(),
-      price: parseFloat(faker.commerce.price()),
-      image: faker.image.imageUrl()
-    })
-  }
+  const products = service.get();
   res.status(HttpStatusCode.OK).json(products);
 });
 
@@ -26,18 +16,13 @@ router.get('/filter', (req: Request, res: Response) => {
 
 router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
+  const product = service.getProduct(id);
 
-  if (id === '999') {
-    res.status(HttpStatusCode.NOT_FOUND).json({
-      message: 'not found'
-    });
-  }else {
-    res.status(HttpStatusCode.OK).json({
-      id,
-      name: faker.commerce.productName(),
-      price: parseFloat(faker.commerce.price()),
-      isNew: faker.datatype.boolean(),
-      tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
+  if (product) {
+    res.status(HttpStatusCode.OK).json(product);
+  } else {
+    res.status(HttpStatusCode.BAD_REQUEST).json({
+      message: 'product not found'
     });
   }
 });

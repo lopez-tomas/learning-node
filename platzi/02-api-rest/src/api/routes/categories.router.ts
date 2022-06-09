@@ -1,32 +1,27 @@
 import express, { Router, Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
-import { HttpStatusCode } from '../interfaces/status';
+import { HttpStatusCode } from '../interfaces/global';
+import CategoriesService from '../services/category.service';
 
 const router: Router = express.Router();
+const service = new CategoriesService();
 
 router.get('/', (req: Request, res: Response) => {
-  res.status(HttpStatusCode.OK).json([
-    {
-      id: faker.datatype.uuid(),
-      category: faker.commerce.department(),
-    },
-    {
-      id: faker.datatype.uuid(),
-      category: faker.commerce.department(),
-    },
-    {
-      id: faker.datatype.uuid(),
-      category: faker.commerce.department(),
-    },
-  ]);
+  const categories = service.get();
+  res.status(HttpStatusCode.OK).json(categories);
 });
 
 router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  res.status(HttpStatusCode.OK).json({
-    id,
-    category: faker.commerce.department(),
-  });
+  const category = service.getCategory(id);
+
+  if (category) {
+    res.status(HttpStatusCode.OK).json(category);
+  } else {
+    res.status(HttpStatusCode.BAD_REQUEST).json({
+      message: 'category not found'
+    });
+  }
 });
 
 router.get('/:id/products/', (req: Request, res: Response) => {

@@ -1,45 +1,27 @@
 import express, { Router, Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
-import { HttpStatusCode } from '../interfaces/status';
+import { HttpStatusCode } from '../interfaces/global';
+import UsersService from '../services/user.service';
 
 const router: Router = express.Router();
+const service = new UsersService();
 
 router.get('/', (req: Request, res: Response) => {
-  const { limit, offset } = req.query;
-
-  if (limit && offset) {
-    res.json({
-      limit,
-      offset
-    })
-  } else {
-    res.status(HttpStatusCode.OK).json([
-      {
-        id: faker.datatype.uuid(),
-        name: 'Peter Parker',
-        email: 'spider@man.com',
-      },
-      {
-        id: faker.datatype.uuid(),
-        name: 'Anthony Stark',
-        email: 'iron@man.com',
-      },
-      {
-        id: faker.datatype.uuid(),
-        name: 'Reed Richards',
-        email: 'mr@fantastic.com',
-      },
-    ]);
-  }
+  const users = service.get();
+  res.status(HttpStatusCode.OK).json(users);
 });
 
 router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  res.status(HttpStatusCode.OK).json({
-    id,
-    name: 'John Doe',
-    email: 'john@doe.com',
-  });
+  const user = service.getUser(id);
+
+  if (user) {
+    res.status(HttpStatusCode.OK).json(user);
+  } else {
+    res.status(HttpStatusCode.BAD_REQUEST).json({
+      message: 'user not found'
+    })
+  }
 });
 
 router.get('/:id/orders', (req: Request, res: Response) => {
