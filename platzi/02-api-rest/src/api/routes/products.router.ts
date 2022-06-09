@@ -1,9 +1,9 @@
-const express = require('express');
+import express, { Router, Request, Response } from 'express';
 const { faker } = require('@faker-js/faker');
 
-const router = express.Router();
+const router: Router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   const products = [];
   const { size } = req.query;
   const limit = size || 10;
@@ -12,14 +12,14 @@ router.get('/', (req, res) => {
     products.push({
       id: faker.datatype.uuid(),
       name: faker.commerce.productName(),
-      price: parseFloat(faker.commerce.price(), 10),
+      price: parseFloat(faker.commerce.price()),
       image: faker.image.imageUrl()
     })
   }
   res.json(products);
 });
 
-router.get('/filter', (req, res) => {
+router.get('/filter', (req: Request, res: Response) => {
   res.send('I am a filter');
 });
 
@@ -34,4 +34,6 @@ router.get('/:id', (req, res) => {
   });
 });
 
-module.exports = router;
+export {
+  router
+}

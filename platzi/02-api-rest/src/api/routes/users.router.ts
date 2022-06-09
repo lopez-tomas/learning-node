@@ -1,9 +1,9 @@
-const express = require('express');
-const { faker } = require('@faker-js/faker');
+import express, { Router, Request, Response } from 'express';
+import { faker } from '@faker-js/faker';
 
-const router = express.Router();
+const router: Router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   const { limit, offset } = req.query;
 
   if (limit && offset) {
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   res.json({
     id,
@@ -41,7 +41,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-router.get('/:id/orders', (req, res) => {
+router.get('/:id/orders', (req: Request, res: Response) => {
   const { id } = req.params;
 
   res.json({
@@ -88,7 +88,7 @@ router.get('/:id/orders', (req, res) => {
   });
 });
 
-router.get('/:userId/orders/:orderId', (req, res) => {
+router.get('/:userId/orders/:orderId', (req: Request, res: Response) => {
   const { userId, orderId } = req.params;
 
   res.json({
@@ -109,4 +109,6 @@ router.get('/:userId/orders/:orderId', (req, res) => {
   });
 });
 
-module.exports = router;
+export{
+  router
+}

@@ -1,9 +1,9 @@
-const express = require('express');
-const { faker } = require('@faker-js/faker');
+import express, { Router, Request, Response } from 'express';
+import { faker } from '@faker-js/faker';
 
-const router = express.Router();
+const router: Router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   res.json([
     {
       id: faker.datatype.uuid(),
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
   ]);
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   res.json({
     id,
@@ -28,7 +28,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-router.get('/:id/products/', (req, res) => {
+router.get('/:id/products/', (req: Request, res: Response) => {
   const { id } = req.params;
   res.json({
     categoryId: id,
@@ -39,4 +39,6 @@ router.get('/:id/products/', (req, res) => {
   });
 });
 
-module.exports = router;
+export {
+  router
+}
