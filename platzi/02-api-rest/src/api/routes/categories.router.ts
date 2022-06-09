@@ -39,6 +39,32 @@ router.get('/:id/products/', (req: Request, res: Response) => {
   });
 });
 
+router.post('/', (req: Request, res: Response) => {
+  const body = req.body;
+  res.json({
+    "message": "created",
+    "data": body
+  });
+});
+
+router.patch('/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const body = req.body;
+  res.json({
+    "message": "udpated",
+    "data": body,
+    id
+  });
+});
+
+router.delete('/:id', (req: Request, res: Response) => {
+  const { id} = req.params;
+  res.json({
+    "message": "deleted",
+    id
+  });
+});
+
 export {
   router
 }
