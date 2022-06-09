@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { User } from '../interfaces/users/users.model';
+import { User } from '../interfaces/users/user.model';
 
 class UsersService {
   users: User[];
