@@ -24,7 +24,7 @@ class UsersService {
     }
   }
 
-  create(data: CreateUserDto) {
+  async create(data: CreateUserDto) {
     const newUser: User = {
       id: faker.datatype.uuid(),
       ...data
@@ -34,15 +34,24 @@ class UsersService {
     return newUser;
   }
 
-  get() {
-    return this.users;
+  async get() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.users);
+      }, 5000);
+    })
   }
 
-  getUser(id: User['id']) {
-    return this.users.find(user => user.id === id);
+  async getUser(id: User['id']) {
+    const product = this.users.find(user => user.id === id);
+    if (product) {
+      return product;
+    } else {
+      throw new Error('user not found');
+    }
   }
 
-  update(id: User['id'], changes: UpdateUserDto) {
+  async update(id: User['id'], changes: UpdateUserDto) {
     const index = this.users.findIndex(user => user.id === id);
 
     if (index === -1) throw new Error('user not found');
@@ -53,7 +62,7 @@ class UsersService {
     return this.users[index];
   }
 
-  delete(id: User['id']) {
+  async delete(id: User['id']) {
     const index = this.users.findIndex(user => user.id === id);
 
     if (index === -1) throw new Error('user not found');

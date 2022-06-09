@@ -13,14 +13,16 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  const user = service.getUser(id);
 
-  if (user) {
+  try {
+    const user = service.getUser(id);
     res.status(HttpStatusCode.OK).json(user);
-  } else {
-    res.status(HttpStatusCode.BAD_REQUEST).json({
-      message: 'user not found'
-    })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
   }
 });
 
@@ -94,27 +96,50 @@ router.get('/:userId/orders/:orderId', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
   const body = req.body;
-  const newUser = service.create(body);
 
-  res.status(HttpStatusCode.CREATED).json(newUser);
+  try {
+    const newUser = service.create(body);
+    res.status(HttpStatusCode.CREATED).json(newUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
+  }
 });
 
 router.patch('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const body = req.body;
-  const user = service.update(id, body);
-
-  res.status(HttpStatusCode.OK).json(user);
+  try {
+    const user = service.update(id, body);
+    res.status(HttpStatusCode.OK).json(user);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
+  }
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  const response = service.delete(id);
+  try {
+    const response = service.delete(id);
+    res.status(HttpStatusCode.OK).json({
+      message: 'user deleted',
+      response
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(HttpStatusCode.NOT_FOUND).json({
+        message: error.message
+      });
+    }
+  }
 
-  res.status(HttpStatusCode.OK).json({
-    message: 'user deleted',
-    response
-  });
 });
 
 export{
