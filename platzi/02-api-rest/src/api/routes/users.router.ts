@@ -1,4 +1,4 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Router, Request, Response, NextFunction } from 'express';
 import { faker } from '@faker-js/faker';
 import { HttpStatusCode } from '../interfaces/global';
 import UsersService from '../services/user.service';
@@ -11,120 +11,40 @@ router.get('/', (req: Request, res: Response) => {
   res.status(HttpStatusCode.OK).json(users);
 });
 
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
     const user = service.getUser(id);
     res.status(HttpStatusCode.OK).json(user);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
-router.get('/:id/orders', (req: Request, res: Response) => {
-  const { id } = req.params;
-
-  res.status(HttpStatusCode.OK).json({
-    userId: id,
-    orders: [
-      {
-        id: faker.datatype.uuid(),
-        date: faker.date.recent(),
-        products: [
-          {
-            id: faker.datatype.uuid(),
-            name: faker.commerce.productName(),
-            price: parseFloat(faker.commerce.price()),
-            isNew: faker.datatype.boolean(),
-            tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
-          }
-        ],
-        total: parseFloat(faker.commerce.price()),
-        method: faker.helpers.arrayElement(['Mercado Pago', 'Efectivo', 'Transferencia', 'Bitcoin']),
-      },
-      {
-        id: faker.datatype.uuid(),
-        date: faker.date.recent(),
-        products: [
-          {
-            id: faker.datatype.uuid(),
-            name: faker.commerce.productName(),
-            price: parseFloat(faker.commerce.price()),
-            isNew: faker.datatype.boolean(),
-            tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
-          },
-          {
-            id: faker.datatype.uuid(),
-            name: faker.commerce.productName(),
-            price: parseFloat(faker.commerce.price()),
-            isNew: faker.datatype.boolean(),
-            tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
-          }
-        ],
-        total: parseFloat(faker.commerce.price()),
-        method: faker.helpers.arrayElement(['Mercado Pago', 'Efectivo', 'Transferencia', 'Bitcoin']),
-      },
-    ]
-  });
-});
-
-router.get('/:userId/orders/:orderId', (req: Request, res: Response) => {
-  const { userId, orderId } = req.params;
-
-  res.status(HttpStatusCode.OK).json({
-    userId,
-    orderId,
-    date: faker.date.recent(),
-    products: [
-      {
-        id: faker.datatype.uuid(),
-        name: faker.commerce.productName(),
-        price: parseFloat(faker.commerce.price()),
-        isNew: faker.datatype.boolean(),
-        tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
-      }
-    ],
-    total: parseFloat(faker.commerce.price()),
-    method: faker.helpers.arrayElement(['Mercado Pago', 'Efectivo', 'Transferencia', 'Bitcoin']),
-  });
-});
-
-router.post('/', (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const body = req.body;
 
   try {
     const newUser = service.create(body);
     res.status(HttpStatusCode.CREATED).json(newUser);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
-router.patch('/:id', (req: Request, res: Response) => {
+router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const body = req.body;
   try {
     const user = service.update(id, body);
     res.status(HttpStatusCode.OK).json(user);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const response = service.delete(id);
@@ -133,11 +53,7 @@ router.delete('/:id', (req: Request, res: Response) => {
       response
     });
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 
 });

@@ -1,4 +1,4 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Router, Request, Response, NextFunction } from 'express';
 import { faker } from '@faker-js/faker';
 import { HttpStatusCode } from '../interfaces/global';
 import CategoriesService from '../services/category.service';
@@ -11,18 +11,14 @@ router.get('/', (req: Request, res: Response) => {
   res.status(HttpStatusCode.OK).json(categories);
 });
 
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
     const category = service.getCategory(id);
     res.status(HttpStatusCode.OK).json(category);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
@@ -48,22 +44,18 @@ router.get('/:id/products/', (req: Request, res: Response) => {
   });
 });
 
-router.post('/', (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response, next: NextFunction) => {
   const body = req.body;
 
   try {
     const newCategory = service.create(body);
     res.status(HttpStatusCode.CREATED).json(newCategory);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
-router.patch('/:id', (req: Request, res: Response) => {
+router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const body = req.body;
 
@@ -71,15 +63,11 @@ router.patch('/:id', (req: Request, res: Response) => {
     const category = service.update(id, body);
     res.status(HttpStatusCode.OK).json(category);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
@@ -89,11 +77,7 @@ router.delete('/:id', (req: Request, res: Response) => {
       response
     });
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 

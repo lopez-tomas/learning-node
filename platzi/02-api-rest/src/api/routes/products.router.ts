@@ -1,4 +1,4 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Router, Request, Response, NextFunction } from 'express';
 import { HttpStatusCode } from '../interfaces/global';
 import ProductsService from '../services/product.service';
 
@@ -14,18 +14,14 @@ router.get('/filter', (req: Request, res: Response) => {
   res.send('I am a filter');
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
     const product = await service.getProduct(id);
     res.status(HttpStatusCode.OK).json(product);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
@@ -36,7 +32,7 @@ router.post('/', async (req: Request, res: Response) => {
   res.status(HttpStatusCode.CREATED).json(newProduct);
 });
 
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const body = req.body;
 
@@ -44,15 +40,11 @@ router.patch('/:id', async (req: Request, res: Response) => {
     const product = await service.update(id, body);
     res.status(HttpStatusCode.ACCEPTED).json(product);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
@@ -62,11 +54,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
       response
     });
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        message: error.message
-      });
-    }
+    next(error);
   }
 
 });
