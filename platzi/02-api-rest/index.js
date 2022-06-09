@@ -1,4 +1,6 @@
 const express = require('express');
+const { faker } = require('@faker-js/faker');
+
 const app = express();
 const port = 3000;
 
@@ -7,23 +9,32 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Peter Parker',
-      email: 'spider@man.com',
-    },
-    {
-      id: 2,
-      name: 'Anthony Stark',
-      email: 'iron@man.com',
-    },
-    {
-      id: 1,
-      name: 'Reed Richards',
-      email: 'mr@fantastic.com',
-    },
-  ]);
+  const { limit, offset } = req.query;
+
+  if (limit && offset) {
+    res.json({
+      limit,
+      offset
+    })
+  } else {
+    res.json([
+      {
+        id: faker.datatype.uuid(),
+        name: 'Peter Parker',
+        email: 'spider@man.com',
+      },
+      {
+        id: faker.datatype.uuid(),
+        name: 'Anthony Stark',
+        email: 'iron@man.com',
+      },
+      {
+        id: faker.datatype.uuid(),
+        name: 'Reed Richards',
+        email: 'mr@fantastic.com',
+      },
+    ]);
+  }
 });
 
 app.get('/users/:id', (req, res) => {
@@ -37,45 +48,46 @@ app.get('/users/:id', (req, res) => {
 
 app.get('/users/:id/orders', (req, res) => {
   const { id } = req.params;
+
   res.json({
     userId: id,
     orders: [
       {
-        id: 1,
-        date: new Date(),
+        id: faker.datatype.uuid(),
+        date: faker.date.recent(),
         products: [
           {
-            id: 1,
-            name: 'Product 1',
-            price: 1200,
-            isNew: false,
-            tags: [],
+            id: faker.datatype.uuid(),
+            name: faker.commerce.productName(),
+            price: parseFloat(faker.commerce.price()),
+            isNew: faker.datatype.boolean(),
+            tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
           }
         ],
-        total: 1200,
-        payMethod: 'MercadoPago',
+        total: parseFloat(faker.commerce.price()),
+        method: faker.helpers.arrayElement(['Mercado Pago', 'Efectivo', 'Transferencia', 'Bitcoin']),
       },
       {
-        id: 2,
-        date: new Date(),
+        id: faker.datatype.uuid(),
+        date: faker.date.recent(),
         products: [
           {
-            id: 1,
-            name: 'Product 1',
-            price: 1200,
-            isNew: false,
-            tags: [],
+            id: faker.datatype.uuid(),
+            name: faker.commerce.productName(),
+            price: parseFloat(faker.commerce.price()),
+            isNew: faker.datatype.boolean(),
+            tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
           },
           {
-            id: 2,
-            name: 'Product 2',
-            price: 800,
-            isNew: true,
-            tags: ['random', 'tech'],
+            id: faker.datatype.uuid(),
+            name: faker.commerce.productName(),
+            price: parseFloat(faker.commerce.price()),
+            isNew: faker.datatype.boolean(),
+            tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
           }
         ],
-        total: 2000,
-        payMethod: 'Cash',
+        total: parseFloat(faker.commerce.price()),
+        method: faker.helpers.arrayElement(['Mercado Pago', 'Efectivo', 'Transferencia', 'Bitcoin']),
       },
     ]
   });
@@ -83,68 +95,71 @@ app.get('/users/:id/orders', (req, res) => {
 
 app.get('/users/:userId/orders/:orderId', (req, res) => {
   const { userId, orderId } = req.params;
+
   res.json({
     userId,
     orderId,
-    date: new Date(),
+    date: faker.date.recent(),
     products: [
       {
-        id: 1,
-        name: 'Product 1',
-        price: 1200,
-        isNew: false,
-        tags: [],
+        id: faker.datatype.uuid(),
+        name: faker.commerce.productName(),
+        price: parseFloat(faker.commerce.price()),
+        isNew: faker.datatype.boolean(),
+        tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
       }
     ],
-    total: 1200,
-    method: 'MP',
+    total: parseFloat(faker.commerce.price()),
+    method: faker.helpers.arrayElement(['Mercado Pago', 'Efectivo', 'Transferencia', 'Bitcoin']),
   });
 });
 
 app.get('/products', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Xbox One controller',
-      price: 16500,
-      isNew: true,
-      tags: ['gaming', 'controller', 'xbox']
-    },
-    {
-      id: 2,
-      name: 'PS4 controller',
-      price: 15800,
-      isNew: false,
-      tags: ['gaming', 'controller', 'ps4', 'playstation']
-    }
-  ]);
+  const products = [];
+  const { size } = req.query;
+  const limit = size || 10;
+
+  for(let i=0; i < limit; i++) {
+    products.push({
+      id: faker.datatype.uuid(),
+      name: faker.commerce.productName(),
+      price: parseFloat(faker.commerce.price(), 10),
+      image: faker.image.imageUrl()
+    })
+  }
+  res.json(products);
+});
+
+app.get('/products/filter', (req, res) => {
+  res.send('I am a filter');
 });
 
 app.get('/products/:id', (req, res) => {
   const { id } = req.params;
   res.json({
     id,
-    name: 'Another product',
-    price: 1200,
-    isNew: true,
-    tags: []
+    name: faker.commerce.productName(),
+    price: parseFloat(faker.commerce.price()),
+    isNew: faker.datatype.boolean(),
+    tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
   });
 });
+
 
 app.get('/categories', (req, res) => {
   res.json([
     {
-      id: 1,
-      category: 'Gaming'
+      id: faker.datatype.uuid(),
+      category: faker.commerce.department(),
     },
     {
-      id: 2,
-      category: 'Food',
+      id: faker.datatype.uuid(),
+      category: faker.commerce.department(),
     },
     {
-      id: 3,
-      category: 'Tools',
-    }
+      id: faker.datatype.uuid(),
+      category: faker.commerce.department(),
+    },
   ]);
 });
 
@@ -152,7 +167,7 @@ app.get('/categories/:id', (req, res) => {
   const { id } = req.params;
   res.json({
     id,
-    name: 'Another category',
+    name: faker.commerce.department(),
   });
 });
 
@@ -160,11 +175,11 @@ app.get('/categories/:id/products/', (req, res) => {
   const { id } = req.params;
   res.json({
     categoryId: id,
-    name: 'Another product 2',
-    price: 800,
-    isNew: false,
-    tags: []
-  })
+    name: faker.commerce.department(),
+    price: parseFloat(faker.commerce.price()),
+    isNew: faker.datatype.boolean(),
+    tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
+  });
 });
 
 app.listen(port, () => {
