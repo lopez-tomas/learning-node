@@ -1,5 +1,7 @@
 import express, { Router, Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
+import { appendFile } from 'fs';
+import { json } from 'stream/consumers';
 
 const router: Router = express.Router();
 
@@ -106,6 +108,32 @@ router.get('/:userId/orders/:orderId', (req: Request, res: Response) => {
     ],
     total: parseFloat(faker.commerce.price()),
     method: faker.helpers.arrayElement(['Mercado Pago', 'Efectivo', 'Transferencia', 'Bitcoin']),
+  });
+});
+
+router.post('/', (req: Request, res: Response) => {
+  const body = req.body;
+  res.json({
+    "message": "created",
+    "data": body
+  });
+});
+
+router.patch('/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const body = req.body;
+  res.json({
+    "message": "updated",
+    "data": body,
+    id
+  })
+});
+
+router.delete('/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.json({
+    "message": "deleted",
+    id
   });
 });
 
