@@ -1,6 +1,8 @@
-import { faker } from '@faker-js/faker';
 import { User } from '../interfaces/users/user.model';
 import { CreateUserDto, UpdateUserDto } from '../interfaces/users/user.dto';
+
+import { faker } from '@faker-js/faker';
+import boom from '@hapi/boom';
 
 class UsersService {
   users: User[];
@@ -44,17 +46,16 @@ class UsersService {
 
   async getUser(id: User['id']) {
     const product = this.users.find(user => user.id === id);
-    if (product) {
-      return product;
-    } else {
-      throw new Error('user not found');
-    }
+
+    if (!product) throw boom.notFound('user not found');
+
+    return product;
   }
 
   async update(id: User['id'], changes: UpdateUserDto) {
     const index = this.users.findIndex(user => user.id === id);
 
-    if (index === -1) throw new Error('user not found');
+    if (index === -1) throw boom.notFound('user not found');
 
     const prevData = this.users[index];
     this.users[index] = {...prevData, ...changes};
@@ -65,7 +66,7 @@ class UsersService {
   async delete(id: User['id']) {
     const index = this.users.findIndex(user => user.id === id);
 
-    if (index === -1) throw new Error('user not found');
+    if (index === -1) throw boom.notFound('user not found');
 
     this.users.splice(index, 1);
 

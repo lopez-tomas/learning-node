@@ -1,6 +1,8 @@
 import { Product } from '../interfaces/products/product.model';
-import { faker } from '@faker-js/faker';
 import { CreateProductDto, UpdateProductDto } from '../interfaces/products/product.dto';
+
+import { faker } from '@faker-js/faker';
+import boom from '@hapi/boom';
 
 class ProductsService {
   products: Product[];
@@ -20,7 +22,8 @@ class ProductsService {
         price: parseFloat(faker.commerce.price()),
         description: faker.commerce.productDescription(),
         image: faker.image.imageUrl(),
-        idCategory: faker.datatype.uuid()
+        idCategory: faker.datatype.uuid(),
+        isBlocked: faker.datatype.boolean(),
       }
 
       this.products.push(product);
@@ -47,17 +50,18 @@ class ProductsService {
 
   async getProduct(id: Product['id']) {
     const product = this.products.find(product => product.id === id);
-    if (product) {
-      return product;
-    } else {
-      throw new Error('product not found');
-    }
+
+    if (!product) throw boom.notFound('product not found');
+
+    if(product.isBlocked) throw boom.conflict('product is blocked');
+
+    return product;
   }
 
   async update(id: Product['id'], changes: UpdateProductDto) {
     const index = this.products.findIndex(product => product.id === id);
 
-    if (index === -1) throw new Error('product not found');
+    if (index === -1) throw boom.notFound('product not found');
 
     const prevData = this.products[index];
     this.products[index] = {...prevData, ...changes};
@@ -68,7 +72,7 @@ class ProductsService {
   async delete(id: Product['id']) {
     const index = this.products.findIndex(product => product.id === id);
 
-    if (index === -1) throw new Error('product not found');
+    if (index === -1) throw boom.notFound('product not found');
 
     this.products.splice(index, 1);
 

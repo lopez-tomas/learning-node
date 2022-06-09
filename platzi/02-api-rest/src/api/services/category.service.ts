@@ -1,6 +1,8 @@
-import { faker } from '@faker-js/faker';
 import { Category } from '../interfaces/categories/category.model';
 import { CreateCategoryDto, UpdateCategoryDto } from '../interfaces/categories/category.dto';
+
+import { faker } from '@faker-js/faker';
+import boom from '@hapi/boom';
 
 class CategoriesService {
   categories: Category[];
@@ -44,17 +46,15 @@ class CategoriesService {
   async getCategory(id: Category['id']) {
     const category = this.categories.find(user => user.id === id);
 
-    if (category) {
-      return category;
-    } else {
-      throw new Error('category not found');
-    }
+    if (!category)  throw boom.notFound('category not found');
+
+    return category;
   }
 
   async update(id: Category['id'], changes: UpdateCategoryDto) {
     const index = this.categories.findIndex(category => category.id === id);
 
-    if (index === -1) throw new Error('category not found');
+    if (index === -1) throw boom.notFound('category not found');
 
     const prevData = this.categories[index];
     this.categories[index] = {...prevData, ...changes};
@@ -65,7 +65,7 @@ class CategoriesService {
   async delete(id: Category['id']) {
     const index = this.categories.findIndex(category => category.id === id);
 
-    if (index === -1) throw new Error('category not found');
+    if (index === -1) throw boom.notFound('category not found');
 
     this.categories.splice(index, 1);
 
