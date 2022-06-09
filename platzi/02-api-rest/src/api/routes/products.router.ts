@@ -1,6 +1,6 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { HttpStatusCode } from '../interfaces/global';
-import ProductsService from '../services/product.service';
+import { ProductsService } from '../services';
 
 const router: Router = express.Router();
 const service = new ProductsService();

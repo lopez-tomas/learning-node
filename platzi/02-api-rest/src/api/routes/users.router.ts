@@ -1,7 +1,6 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
-import { faker } from '@faker-js/faker';
 import { HttpStatusCode } from '../interfaces/global';
-import UsersService from '../services/user.service';
+import { UsersService } from '../services';
 
 const router: Router = express.Router();
 const service = new UsersService();

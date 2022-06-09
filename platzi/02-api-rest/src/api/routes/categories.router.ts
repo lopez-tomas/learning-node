@@ -1,7 +1,6 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
-import { faker } from '@faker-js/faker';
 import { HttpStatusCode } from '../interfaces/global';
-import CategoriesService from '../services/category.service';
+import { CategoriesService } from '../services';
 
 const router: Router = express.Router();
 const service = new CategoriesService();
@@ -20,28 +19,6 @@ router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     next(error);
   }
-});
-
-router.get('/:id/products/', (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.status(HttpStatusCode.OK).json({
-    categoryId: id,
-    products: [
-      {
-        name: faker.commerce.department(),
-        price: parseFloat(faker.commerce.price()),
-        isNew: faker.datatype.boolean(),
-        tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
-      },
-      {
-        categoryId: id,
-        name: faker.commerce.department(),
-        price: parseFloat(faker.commerce.price()),
-        isNew: faker.datatype.boolean(),
-        tags: faker.helpers.arrayElements(['test', 'random', 'prueba'], 2),
-      },
-    ],
-  });
 });
 
 router.post('/', (req: Request, res: Response, next: NextFunction) => {
