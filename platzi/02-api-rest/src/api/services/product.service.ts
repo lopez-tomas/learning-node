@@ -1,6 +1,6 @@
 import { Product } from '../interfaces/products/product.model';
 import { faker } from '@faker-js/faker';
-// import { CreateProductDto } from '../interfaces/products/product.dto';
+import { CreateProductDto, UpdateProductDto } from '../interfaces/products/product.dto';
 
 class ProductsService {
   products: Product[];
@@ -27,8 +27,14 @@ class ProductsService {
     }
   }
 
-  create() {
-    // code...
+  create(data: CreateProductDto) {
+    const newProduct: Product = {
+      id: faker.datatype.uuid(),
+      ...data
+    }
+
+    this.products.push(newProduct);
+    return newProduct;
   }
 
   get() {
@@ -39,12 +45,25 @@ class ProductsService {
     return this.products.find(product => product.id === id);
   }
 
-  update() {
-    // code...
+  update(id: Product['id'], changes: UpdateProductDto) {
+    const index = this.products.findIndex(product => product.id === id);
+
+    if (index === -1) throw new Error('product not found');
+
+    const prevData = this.products[index];
+    this.products[index] = {...prevData, ...changes};
+
+    return this.products[index];
   }
 
-  delete() {
-    // code...
+  delete(id: Product['id']) {
+    const index = this.products.findIndex(product => product.id === id);
+
+    if (index === -1) throw new Error('product not found');
+
+    this.products.splice(index, 1);
+
+    return { id };
   }
 }
 
