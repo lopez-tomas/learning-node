@@ -37,27 +37,26 @@ router.get('/:id/products/', (req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
   const body = req.body;
-  res.status(HttpStatusCode.CREATED).json({
-    "message": "created",
-    "data": body
-  });
+  const newCategory = service.create(body);
+
+  res.status(HttpStatusCode.CREATED).json(newCategory);
 });
 
 router.patch('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const body = req.body;
-  res.status(HttpStatusCode.OK).json({
-    "message": "udpated",
-    "data": body,
-    id
-  });
+  const category = service.update(id, body);
+
+  res.status(HttpStatusCode.OK).json(category);
 });
 
 router.delete('/:id', (req: Request, res: Response) => {
   const { id} = req.params;
+  const response = service.delete(id);
+
   res.status(HttpStatusCode.OK).json({
-    "message": "deleted",
-    id
+    message: "category deleted",
+    response
   });
 });
 
