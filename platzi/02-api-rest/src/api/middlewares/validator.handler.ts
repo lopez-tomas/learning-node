@@ -6,7 +6,7 @@ export const validatorHandler = (schema: Joi.ObjectSchema, property: keyof Reque
   return (req: Request, res: Response, next: NextFunction) => {
     const data = req[property]; // dynamic property => req.body; req.params; req.query
 
-    const { error } = schema.validate(data);
+    const { error } = schema.validate(data, { abortEarly: false });
     if (error) {
       next(boom.badRequest(error.message));
     }
