@@ -7,7 +7,7 @@ export type UpdateProductDto = Partial<CreateProductDto>;
 
 const id = Joi.string().uuid();
 const name = Joi.string().min(3);
-const price = Joi.number().min(1.0);
+const price = Joi.number().min(1.0).strict();
 const description = Joi.string().min(10);
 const image = Joi.string().dataUri();
 const idCategory = Joi.string().uuid();
