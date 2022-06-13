@@ -12,7 +12,7 @@ app.use(express.json());
 const whiteList = ['http://localhost:8080', 'https://tomaslopez.dev', 'https://sheltered-reef-98122.herokuapp.com/'];
 const options = {
   origin: (origin: any, callback: any) => {
-    if (whiteList.includes(origin)) {
+    if (whiteList.includes(origin) || !origin) {
       callback(null, true);
     } else{
       callback(new Error('Origin not allowed: ' + origin))
