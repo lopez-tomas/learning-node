@@ -14,12 +14,17 @@ class UsersService {
 
   generate() {
     const limit = 100;
+    let firstName: User['name'];
+    let lastName: User['name'];
 
     for(let i=0; i<limit; i++) {
+      firstName = faker.name.firstName();
+      lastName = faker.name.lastName();
+
       let user: User = {
         id: faker.datatype.uuid(),
-        name: faker.name.firstName() + faker.name.lastName(),
-        email: `${faker.name.firstName()}@${faker.name.lastName()}.com`
+        name: `${firstName} ${lastName}`,
+        email: `${firstName}@${lastName}.com`
       }
 
       this.users.push(user);
