@@ -9,8 +9,8 @@ import express, { Router, Request, Response, NextFunction } from 'express';
 const router: Router = express.Router();
 const service = new UsersService();
 
-router.get('/', (req: Request, res: Response) => {
-  const users = service.get();
+router.get('/', async (req: Request, res: Response) => {
+  const users = await service.get();
   res.status(HttpStatusCode.OK).json(users);
 });
 
