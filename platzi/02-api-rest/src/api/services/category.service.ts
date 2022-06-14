@@ -1,15 +1,19 @@
 import { Category } from '../interfaces/categories/category.model';
 import { CreateCategoryDto, UpdateCategoryDto } from '../interfaces/categories/category.dto';
+import { pool } from '../libs/postgres.pool';
 
 import { faker } from '@faker-js/faker';
 import boom from '@hapi/boom';
 
 class CategoriesService {
   categories: Category[];
+  pool;
 
   constructor() {
     this.categories = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -36,11 +40,9 @@ class CategoriesService {
   }
 
   async get() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.categories);
-      });
-    });
+    const query = 'SELECT * FROM tasks';
+    const response = await this.pool.query(query);
+    return response.rows;
   }
 
   async getCategory(id: Category['id']) {

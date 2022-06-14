@@ -1,15 +1,19 @@
 import { User } from '../interfaces/users/user.model';
 import { CreateUserDto, UpdateUserDto } from '../interfaces/users/user.dto';
+import { pool } from '../libs/postgres.pool';
 
 import { faker } from '@faker-js/faker';
 import boom from '@hapi/boom';
 
 class UsersService {
   users: User[];
+  pool;
 
   constructor() {
     this.users = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -42,11 +46,9 @@ class UsersService {
   }
 
   async get() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.users);
-      }, 5000);
-    })
+    const query = 'SELECT * FROM tasks';
+    const response = await this.pool.query(query);
+    return response.rows;
   }
 
   async getUser(id: User['id']) {

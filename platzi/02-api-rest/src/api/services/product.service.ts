@@ -1,15 +1,19 @@
 import { Product } from '../interfaces/products/product.model';
 import { CreateProductDto, UpdateProductDto } from '../interfaces/products/product.dto';
+import { pool } from '../libs/postgres.pool';
 
 import { faker } from '@faker-js/faker';
 import boom from '@hapi/boom';
 
 class ProductsService {
   products: Product[];
+  pool;
 
   constructor() {
     this.products = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -41,11 +45,9 @@ class ProductsService {
   }
 
   async get() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.products);
-      }, 5000);
-    });
+    const query = 'SELECT * FROM tasks';
+    const response = await this.pool.query(query);
+    return response.rows;
   }
 
   async getProduct(id: Product['id']) {
