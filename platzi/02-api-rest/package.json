@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/pg": "^8.6.5",
     "concurrently": "^7.2.1",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
