@@ -1,19 +1,16 @@
 import { User } from '../interfaces/users/user.model';
 import { CreateUserDto, UpdateUserDto } from '../interfaces/users/user.dto';
-import { pool } from '../libs/postgres.pool';
+import { sequelize } from '../libs/sequelize';
 
 import { faker } from '@faker-js/faker';
 import boom from '@hapi/boom';
 
 class UsersService {
   users: User[];
-  pool;
 
   constructor() {
     this.users = [];
     this.generate();
-    this.pool = pool;
-    this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -47,8 +44,8 @@ class UsersService {
 
   async get() {
     const query = 'SELECT * FROM tasks';
-    const response = await this.pool.query(query);
-    return response.rows;
+    const [data, metadata] = await sequelize.query(query);
+    return data;
   }
 
   async getUser(id: User['id']) {
