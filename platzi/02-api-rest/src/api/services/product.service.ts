@@ -42,9 +42,8 @@ class ProductsService {
   }
 
   async get() {
-    const query = 'SELECT * FROM tasks';
-    const [data, metadata] = await sequelize.query(query);
-    return data;
+    const response = await sequelize.models.Product.findAll();
+    return response;
   }
 
   async getProduct(id: Product['id']) {

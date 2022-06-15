@@ -43,9 +43,8 @@ class UsersService {
   }
 
   async get() {
-    const query = 'SELECT * FROM tasks';
-    const [data, metadata] = await sequelize.query(query);
-    return data;
+    const response = await sequelize.models.User.findAll();
+    return response;
   }
 
   async getUser(id: User['id']) {

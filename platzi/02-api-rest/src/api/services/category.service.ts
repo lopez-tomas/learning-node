@@ -37,9 +37,8 @@ class CategoriesService {
   }
 
   async get() {
-    const query = 'SELECT * FROM tasks';
-    const [data, metadata] = await sequelize.query(query);
-    return data;
+    const response = await sequelize.models.Category.findAll();
+    return response;
   }
 
   async getCategory(id: Category['id']) {
