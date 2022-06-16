@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 
 import routerApi from './api/routes';
-import { logErrors, errorHandler, boomErrorHandler } from './api/middlewares/error.handler';
+import { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } from './api/middlewares/error.handler';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -38,6 +38,7 @@ app.get('/api', (req: Request, res: Response) => {
 routerApi(app);
 
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
