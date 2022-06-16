@@ -42,30 +42,25 @@ class CategoriesService {
   }
 
   async getCategory(id: Category['id']) {
-    const category = this.categories.find(user => user.id === id);
+    const category = await sequelize.models.Category.findByPk(id);
 
-    if (!category)  throw boom.notFound('category not found');
+    if (!category) {
+      throw boom.notFound('category not found');
+    }
 
     return category;
   }
 
   async update(id: Category['id'], changes: UpdateCategoryDto) {
-    const index = this.categories.findIndex(category => category.id === id);
+    const category = await this.getCategory(id);
+    const response = await category.update(changes);
 
-    if (index === -1) throw boom.notFound('category not found');
-
-    const prevData = this.categories[index];
-    this.categories[index] = {...prevData, ...changes};
-
-    return this.categories[index];
+    return response;
   }
 
   async delete(id: Category['id']) {
-    const index = this.categories.findIndex(category => category.id === id);
-
-    if (index === -1) throw boom.notFound('category not found');
-
-    this.categories.splice(index, 1);
+    const category = await this.getCategory(id);
+    await category.destroy();
 
     return { id };
   }

@@ -15,17 +15,18 @@ class UsersService {
 
   generate() {
     const limit = 100;
-    let firstName: User['name'];
-    let lastName: User['name'];
+    let firstName: User['email'];
+    let lastName: User['email'];
 
     for(let i=0; i<limit; i++) {
       firstName = faker.name.firstName();
       lastName = faker.name.lastName();
 
       let user: User = {
-        id: faker.datatype.uuid(),
-        name: `${firstName} ${lastName}`,
-        email: `${firstName}@${lastName}.com`
+        id: faker.datatype.number(),
+        email: `${firstName}@${lastName}.com`,
+        password: `${firstName}${lastName}123`,
+        createdAt: new Date(),
       }
 
       this.users.push(user);
@@ -33,12 +34,7 @@ class UsersService {
   }
 
   async create(data: CreateUserDto) {
-    const newUser: User = {
-      id: faker.datatype.uuid(),
-      ...data
-    }
-
-    this.users.push(newUser);
+    const newUser = await sequelize.models.User.create(data);
     return newUser;
   }
 
@@ -48,30 +44,25 @@ class UsersService {
   }
 
   async getUser(id: User['id']) {
-    const product = this.users.find(user => user.id === id);
+    const user = await sequelize.models.User.findByPk(id);
 
-    if (!product) throw boom.notFound('user not found');
+    if (!user) {
+      throw boom.notFound('user not found');
+    }
 
-    return product;
+    return user;
   }
 
   async update(id: User['id'], changes: UpdateUserDto) {
-    const index = this.users.findIndex(user => user.id === id);
+    const user = await this.getUser(id);
+    const response = await user.update(changes);
 
-    if (index === -1) throw boom.notFound('user not found');
-
-    const prevData = this.users[index];
-    this.users[index] = {...prevData, ...changes};
-
-    return this.users[index];
+    return response;
   }
 
   async delete(id: User['id']) {
-    const index = this.users.findIndex(user => user.id === id);
-
-    if (index === -1) throw boom.notFound('user not found');
-
-    this.users.splice(index, 1);
+    const user = await this.getUser(id);
+    await user.destroy();
 
     return { id };
   }

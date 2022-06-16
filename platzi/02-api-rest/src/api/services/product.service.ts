@@ -47,32 +47,25 @@ class ProductsService {
   }
 
   async getProduct(id: Product['id']) {
-    const product = this.products.find(product => product.id === id);
+    const product = await sequelize.models.Product.findByPk(id);
 
-    if (!product) throw boom.notFound('product not found');
-
-    if(product.isBlocked) throw boom.conflict('product is blocked');
+    if (!product) {
+      throw boom.notFound('product not found');
+    }
 
     return product;
   }
 
   async update(id: Product['id'], changes: UpdateProductDto) {
-    const index = this.products.findIndex(product => product.id === id);
+    const product = await this.getProduct(id);
+    const response = await product.update(changes);
 
-    if (index === -1) throw boom.notFound('product not found');
-
-    const prevData = this.products[index];
-    this.products[index] = {...prevData, ...changes};
-
-    return this.products[index];
+    return response;
   }
 
   async delete(id: Product['id']) {
-    const index = this.products.findIndex(product => product.id === id);
-
-    if (index === -1) throw boom.notFound('product not found');
-
-    this.products.splice(index, 1);
+    const product = await this.getProduct(id);
+    await product.destroy();
 
     return { id };
   }
