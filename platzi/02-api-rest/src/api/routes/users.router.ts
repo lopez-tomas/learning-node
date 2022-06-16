@@ -20,7 +20,7 @@ router.get('/:id',
     const { id } = req.params;
 
     try {
-      const user = service.getUser(id);
+      const user = await service.getUser(id);
       res.status(HttpStatusCode.OK).json(user);
     } catch (error) {
       next(error);
@@ -34,7 +34,7 @@ router.post('/',
     const body = req.body;
 
     try {
-      const newUser = service.create(body);
+      const newUser = await service.create(body);
       res.status(HttpStatusCode.CREATED).json(newUser);
     } catch (error) {
       next(error);
@@ -49,7 +49,7 @@ router.patch('/:id',
     const { id } = req.params;
     const body = req.body;
     try {
-      const user = service.update(id, body);
+      const user = await service.update(id, body);
       res.status(HttpStatusCode.OK).json(user);
     } catch (error) {
       next(error);
@@ -63,7 +63,7 @@ router.delete('/:id',
     const { id } = req.params;
 
     try {
-      const response = service.delete(id);
+      const response = await service.delete(id);
       res.status(HttpStatusCode.OK).json({
         message: 'user deleted',
         response

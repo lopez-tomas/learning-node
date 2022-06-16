@@ -20,7 +20,7 @@ router.get('/:id',
     const { id } = req.params;
 
     try {
-      const category = service.getCategory(id);
+      const category = await service.getCategory(id);
       res.status(HttpStatusCode.OK).json(category);
     } catch (error) {
       next(error);
@@ -34,7 +34,7 @@ router.post('/',
     const body = req.body;
 
     try {
-      const newCategory = service.create(body);
+      const newCategory = await service.create(body);
       res.status(HttpStatusCode.CREATED).json(newCategory);
     } catch (error) {
       next(error);
@@ -50,7 +50,7 @@ router.patch('/:id',
     const body = req.body;
 
     try {
-      const category = service.update(id, body);
+      const category = await service.update(id, body);
       res.status(HttpStatusCode.OK).json(category);
     } catch (error) {
       next(error);
@@ -64,7 +64,7 @@ router.delete('/:id',
     const { id } = req.params;
 
     try {
-      const response = service.delete(id);
+      const response = await service.delete(id);
       res.status(HttpStatusCode.OK).json({
         message: "category deleted",
         response
