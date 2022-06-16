@@ -15,7 +15,7 @@ const ProductSchema = {
     unique: true,
   },
   price: {
-    type: DataTypes.DECIMAL,
+    type: DataTypes.DECIMAL(15,2),
   },
   description: {
     type: DataTypes.TEXT,
