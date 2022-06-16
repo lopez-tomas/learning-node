@@ -1,6 +1,6 @@
-import { config } from '../../config/config';
+const { config } = require('../../config/config');
 import { Sequelize } from 'sequelize';
-import { setupModels } from '../models';
+const { setupModels } = require('../models');
 
 const USER = encodeURIComponent(config.dbUser!);
 const PASSWORD = encodeURIComponent(config.dbPassword!);
@@ -12,8 +12,6 @@ const sequelize = new Sequelize(URI, {
 });
 
 setupModels(sequelize);
-
-sequelize.sync();
 
 export {
   sequelize,
