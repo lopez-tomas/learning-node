@@ -1,4 +1,4 @@
-import { config } from '../../config/config';
+const { config } = require('../../config/config');
 import { Pool } from 'pg';
 
 const USER = encodeURIComponent(config.dbUser!);

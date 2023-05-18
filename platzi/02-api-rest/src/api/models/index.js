@@ -1,4 +1,3 @@
-// const { Sequelize } = require('sequelize');
 const { User, UserSchema } = require('./user.model');
 const { Product, ProductSchema } = require('./product.model');
 const { Category, CategorySchema } = require('./category.model');
